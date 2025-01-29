@@ -1,0 +1,63 @@
+---
+- block:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Upgrade apt packages
+      ansible.builtin.apt:
+        upgrade: dist
+        autoremove: yes
+
+    - name: Install htop
+      ansible.builtin.apt:
+        name: htop
+        state: present
+
+    - name: Ensure /root/.ssh directory exists
+      ansible.builtin.file:
+        path: /root/.ssh
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+
+    - name: Copy authorized_keys for root
+      ansible.builtin.copy:
+        src: authorized_keys            # Make sure this file exists in 'files/' if inside a role,
+                                       # or in the same directory if inline tasks.
+        dest: /root/.ssh/authorized_keys
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: Disable password authentication in SSH
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication '
+        line: 'PasswordAuthentication no'
+
+    - name: Ensure PermitRootLogin is set to yes
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin '
+        line: 'PermitRootLogin yes'
+
+    - name: Ensure PubkeyAuthentication is set to yes
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PubkeyAuthentication '
+        line: 'PubkeyAuthentication yes'
+
+    - name: Change SSH port to 89789
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?Port '
+        line: 'Port 89789'
+
+    - name: Restart SSH service
+      ansible.builtin.service:
+        name: ssh
+        state: restarted
+
+  become: true
