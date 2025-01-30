@@ -1,6 +1,6 @@
 ---
 - name: Provision Ubuntu server
-  hosts: test_server  # or dev, or prod, or whatever group/host you have in hosts.yaml
-  become: yes         # Use sudo for privileged tasks
+  hosts: all  
+  become: yes         
   roles:
     - ubuntu
