@@ -1,6 +1,6 @@
 ---
 - name: Provision Ubuntu server
-  hosts: all  
-  become: yes         
+  hosts: all
+  become: true
   roles:
     - ubuntu

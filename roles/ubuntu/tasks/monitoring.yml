@@ -1,6 +1,6 @@
 ---
 - name: Install monitoring tools
   hosts: test_server
-  become: yes
+  become: true
   roles:
     - monitoring
