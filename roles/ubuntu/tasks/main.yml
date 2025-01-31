@@ -129,3 +129,7 @@
     post_reboot_delay: 30
   become: true
   when: ssh_test.rc == 0
+
+vars:
+  ssh_port: 65456
+  user: root
