@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 - name: Provision Ubuntu server
   hosts: all
   become: true
@@ -14,11 +14,4 @@
 
     - name: Install htop
       import_tasks: roles/ubuntu/tasks/htop.yml
-=======
----
-- name: Provision Ubuntu server
-  hosts: all
-  become: true
-  roles:
-    - ubuntu
->>>>>>> main
+
