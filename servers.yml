@@ -1,0 +1,15 @@
+- name: Provision Ubuntu server
+  hosts: all
+  become: true
+  tasks:
+    - name: Run system update tasks
+      import_tasks: roles/ubuntu/tasks/systemupdate.yml
+
+    - name: Copy SSH authorized_keys
+      import_tasks: roles/ubuntu/tasks/copyauth.yml
+
+    - name: Configure SSH
+      import_tasks: roles/ubuntu/tasks/configuressh.yml
+
+    - name: Install htop
+      import_tasks: roles/ubuntu/tasks/htop.yml
