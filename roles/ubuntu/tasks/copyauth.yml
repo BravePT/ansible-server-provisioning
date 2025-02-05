@@ -9,7 +9,11 @@
 
 - name: Copy authorized_keys for root
   ansible.builtin.copy:
+<<<<<<< HEAD
     src: "{{ playbook_dir }}/roles/ubuntu/files/authorized_keys"
+=======
+    src: authorized_keys
+>>>>>>> main
     dest: /root/.ssh/authorized_keys
     owner: root
     group: root
