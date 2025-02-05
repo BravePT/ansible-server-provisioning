@@ -1,0 +1,5 @@
+---
+- name: Provision a Bonsol Node using the bonsol role
+  hosts: all
+  roles:
+    - bonsol

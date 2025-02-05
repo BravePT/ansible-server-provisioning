@@ -1,0 +1,30 @@
+---
+- name: Disable password authentication in SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication "
+    line: "PasswordAuthentication no"
+    backup: true
+
+- name: Ensure PermitRootLogin is set to yes
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin "
+    line: "PermitRootLogin yes"
+
+- name: Ensure PubkeyAuthentication is set to yes
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PubkeyAuthentication "
+    line: "PubkeyAuthentication yes"
+
+- name: Change SSH port to 65456
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?Port "
+    line: "Port 65456"
+
+- name: Restart SSH service
+  ansible.builtin.service:
+    name: ssh
+    state: restarted

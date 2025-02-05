@@ -1,0 +1,11 @@
+---
+- name: run other tasks
+  hosts: contabo
+  become: true
+  tasks:
+
+    - name: Install htop
+      ansible.builtin.apt:
+        name: htop
+        state: present
+      become: true

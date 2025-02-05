@@ -1,0 +1,86 @@
+---
+- name: Install Rust toolchain using rustup
+  shell: >
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+    sh -s -- --default-toolchain {{ rust_toolchain }} -y
+  args:
+    creates: "/root/.cargo/bin/cargo"
+    executable: /bin/bash
+
+- name: Ensure Cargo is on the PATH (append to .profile)
+  lineinfile:
+    path: "/root/.profile"
+    line: 'export PATH="$HOME/.cargo/bin:$PATH"'
+    state: present
+    create: yes
+
+- name: Create directory for Bonsol stark binaries
+  file:
+    path: "{{ stark_remote_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create directory for Bonsol keypair files
+  file:
+    path: "{{ keypair_remote_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy stark binaries to node
+  copy:
+    src: "{{ stark_local_dir }}/"
+    dest: "{{ stark_remote_dir }}/"
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy keypair files to node
+  copy:
+    src: "{{ keypair_local_dir }}/"
+    dest: "{{ keypair_remote_dir }}/"
+    owner: root
+    group: root
+    mode: '0600'
+    recursive: yes
+
+- name: Clone the Bonsol repository
+  git:
+    repo: "{{ bonsol_repo }}"
+    dest: "{{ bonsol_dir }}"
+    depth: 1
+    update: no
+
+- name: Build Bonsol with CUDA support
+  shell: "source /root/.cargo/env && cargo build -f cuda --release"
+  args:
+    chdir: "{{ bonsol_dir }}"
+
+- name: Create Bonsol Node configuration file
+  template:
+    src: Node.toml.j2
+    dest: "{{ node_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy systemd service unit for Bonsol Node
+  template:
+    src: bonsol.service.j2
+    dest: "/etc/systemd/system/bonsol.service"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start Bonsol service
+  systemd:
+    name: bonsol
+    state: started
+    enabled: yes
