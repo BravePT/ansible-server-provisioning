@@ -2,8 +2,8 @@
 rust_toolchain: "1.81.0"
 
 # Local paths on the controller (ensure these directories exist in your playbook folder)
-stark_local_dir: "{{ playbook_dir }}/roles/bonsol/stark1"
-keypair_local_dir: "{{ playbook_dir }}/roles/bonsol/keypair"
+stark_local_dir: "/Users/ruicardoso/bonsol/bonsol/bin/stark"
+keypair_local_dir: "/Users/ruicardoso/bonsol/bonsol/bin/stark"
 
 # Remote paths on the node
 stark_remote_dir: "/opt/bonsol/stark"

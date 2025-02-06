@@ -12,6 +12,12 @@
     regexp: "^#?PermitRootLogin "
     line: "PermitRootLogin yes"
 
+- name: Ensure SSH logging is enabled
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?LogLevel "
+    line: "LogLevel VERBOSE"
+
 - name: Ensure PubkeyAuthentication is set to yes
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
