@@ -1,6 +1,6 @@
 ---
 - name: run other tasks
-  hosts: contabo
+  hosts: all
   become: true
   tasks:
 
@@ -8,4 +8,3 @@
       ansible.builtin.apt:
         name: htop
         state: present
-      become: true

@@ -1,9 +1,9 @@
 ---
-- name: Disable password authentication in SSH
+- name: Allow password authentication in SSH
   ansible.builtin.lineinfile:
     path: /etc/ssh/sshd_config
     regexp: "^#?PasswordAuthentication "
-    line: "PasswordAuthentication no"
+    line: "PasswordAuthentication yes"
     backup: true
 
 - name: Ensure PermitRootLogin is set to yes

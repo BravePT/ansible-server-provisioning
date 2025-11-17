@@ -1,4 +1,4 @@
-
+---
 - name: Provision Ubuntu server
   hosts: all
   become: true

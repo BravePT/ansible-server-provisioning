@@ -5,17 +5,13 @@
     state: directory
     owner: root
     group: root
-    mode: '0700'
+    mode: "0700"
 
 - name: Copy authorized_keys for root
   ansible.builtin.copy:
-<<<<<<< HEAD
-    src: "{{ playbook_dir }}/roles/ubuntu/files/authorized_keys"
-=======
-    src: authorized_keys
->>>>>>> main
+    src: roles/ubuntu/files/authorized_keys
     dest: /root/.ssh/authorized_keys
     owner: root
     group: root
-    mode: '0600'
+    mode: "0600"
     backup: true

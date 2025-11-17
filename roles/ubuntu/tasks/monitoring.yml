@@ -1,6 +1,10 @@
 ---
 - name: Install monitoring tools
-  hosts: test_server
-  become: true
-  roles:
-    - monitoring
+  ansible.builtin.apt:
+    name:
+      - htop
+      - iotop
+      - iftop
+      - nmon
+    state: present
+    update_cache: true
