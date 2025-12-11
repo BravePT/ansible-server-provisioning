@@ -1,49 +1,52 @@
-# Ansible Bare Metal Provisioning
+## About
 
-Ansible playbooks for automated Ubuntu server provisioning with system updates, SSH configuration, and monitoring tools.
+Automated provisioning playbooks used to manage production Ubuntu servers for blockchain infrastructure and homelab environments.
 
-## Features
+### What This Does
 
-- System updates and package management
-- SSH hardening and key deployment
-- Monitoring tools (htop, iotop, iftop, nmon)
-- Customizable server configuration
+- **System Hardening**: Updates packages, configures SSH on custom port (65456)
+- **Monitoring Setup**: Installs htop, iotop, iftop, nmon for system observability
+- **SSH Key Management**: Deploys authorized keys for secure access
+- **Idempotent**: Safe to run multiple times
 
-## Prerequisites
+### Production Use
 
-- Ansible 2.9+
-- SSH access to target servers
-- Root or sudo privileges
+Used to provision:
+- Bare-metal blockchain validator nodes
+- VPS instances for various services
+- Homelab infrastructure servers
 
-## Quick Start
+Tested on Ubuntu 20.04, 22.04, and 24.04 LTS.
 
-1. **Configure inventory:**
-   ```bash
-   cp inventory/hosts.yml.example inventory/hosts.yml
-   # Edit inventory/hosts.yml with your server details
-   ```
+## Project Structure
+```
+ansible-bm/
+├── inventory/          # Host definitions
+├── roles/
+│   └── ubuntu/        # Ubuntu-specific tasks
+│       ├── tasks/     # Playbook tasks
+│       └── files/     # Config files and keys
+├── servers.yml        # Full provisioning playbook
+└── htopp.yml         # Minimal monitoring install
+```
 
-2. **Configure SSH keys:**
-   ```bash
-   cp roles/ubuntu/files/authorized_keys.example roles/ubuntu/files/authorized_keys
-   # Add your public SSH keys
-   ```
+## Usage Examples
+```bash
+# Full server setup
+ansible-playbook -i inventory/hosts.yml servers.yml
 
-3. **Run provisioning:**
-   ```bash
-   ansible-playbook -i inventory/hosts.yml servers.yml
-   ```
+# Install monitoring only
+ansible-playbook -i inventory/hosts.yml htopp.yml
 
-## Playbooks
+# Target specific hosts
+ansible-playbook -i inventory/hosts.yml servers.yml --limit webservers
 
-- `servers.yml` - Full server provisioning (updates, SSH config, monitoring)
-- `htopp.yml` - Install htop only
+# Dry run
+ansible-playbook -i inventory/hosts.yml servers.yml --check
+```
 
-## SSH Configuration
+## Security Notes
 
-Configures SSH with custom port 65456, enables both key and password authentication, and verbose logging. Review `roles/ubuntu/tasks/configuressh.yml` for details.
-
-
-## License
-
-
+- SSH configured on port 65456 (change in `roles/ubuntu/tasks/configuressh.yml`)
+- Both key and password authentication enabled (adjust as needed)
+- Ensure `authorized_keys` file contains only trusted public keys
