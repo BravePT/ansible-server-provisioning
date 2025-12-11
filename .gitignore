@@ -1,0 +1,45 @@
+# Ansible sensitive files
+inventory/hosts.yml
+inventory/*.yml
+!inventory/*.yml.example
+
+# SSH keys and authorized_keys
+roles/**/files/authorized_keys
+*.pem
+*.key
+*.pub
+
+# Environment and secrets
+.env
+.env.*
+*.vault
+vault_pass.txt
+vault_password
+.vault_pass
+
+# Python
+*.pyc
+__pycache__/
+*.py[cod]
+*$py.class
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.iml
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.backup
